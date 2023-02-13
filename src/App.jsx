@@ -2,35 +2,27 @@ import React, { useEffect, useRef } from "react";
 import "./App.css";
 
 export const App = () => {
-  const label = useRef(null);
-  const label2 = useRef(null);
+  const labels = useRef(null);
+  const labels2 = useRef(null);
+
+  const wave = (focusLabel) => {
+    Array.from(focusLabel.current.children).forEach((label) => {
+      label.innerHTML = label.innerText.split("").map(
+        (letter, idx) =>
+        `<span style="transition-delay:${idx * 50}ms">${letter}</span>`
+        ).join("");
+    });
+  };
 
   useEffect(() => {
-    if (label.current) {
-      Array.from(label.current.children).forEach((label) => {
-        label.innerHTML = label.innerText
-          .split("")
-          .map(
-            (letter, idx) =>
-              `<span style="transition-delay:${idx * 50}ms">${letter}</span>`
-          )
-          .join("");
-      });
+    if (labels.current) {
+      wave(labels);
     }
-  }, []);
-  useEffect(() => {
-    if (label2.current) {
-      Array.from(label2.current.children).forEach((label) => {
-        label.innerHTML = label.innerText
-          .split("")
-          .map(
-            (letter, idx) =>
-              `<span style="transition-delay:${idx * 50}ms">${letter}</span>`
-          )
-          .join("");
-      });
+
+    if (labels2.current) {
+      wave(labels2);
     }
-  }, []);
+  }, [labels, labels2]);
 
   return (
     <>
@@ -38,16 +30,15 @@ export const App = () => {
         <div className="container">
           <h1>Please Login</h1>
           <form>
-            
-              <div className="form-control" ref={label}>
-                <input type="text" required />
-                <label>Email</label>
-              </div>
-              <div className="form-control" ref={label2}>
-                <input type="password" required />
-                <label>Password</label>
-              </div>
-            
+            <div className="form-control" ref={labels}>
+              <input type="text" required />
+              <label>Email</label>
+            </div>
+            <div className="form-control" ref={labels2}>
+              <input type="password" required />
+              <label>Password</label>
+            </div>
+
             <button className="btn">Login</button>
             <p className="text">
               Don't have an account? <a href="#">Register</a>{" "}
